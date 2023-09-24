@@ -1,4 +1,5 @@
-﻿using DPA.Store.DOMAIN.Core.Interfaces;
+﻿using DPA.Store.DOMAIN.Core.Entities;
+using DPA.Store.DOMAIN.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,33 @@ namespace DPA.Store.API.Controllers
         {
             var categories = await _categoryRepository.GetAll();
             return Ok(categories);
+        }
+
+        [HttpGet("GetById/{id}")]
+        public async Task<IActionResult> GetById()
+        {
+            var categories = await _categoryRepository.GetById(id);
+            return Ok(categories);
+        }
+
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create(Category category)
+        {
+            var result = await _categoryRepository.Insert(Category);
+            if(!result)
+            {
+                return BadRequest(result);
+            }
+        }
+
+        [HttpPost("Delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _categoryRepository.Delete(id);
+            if (!result)
+            {
+                return BadRequest(result);
+            }
         }
 
     }
